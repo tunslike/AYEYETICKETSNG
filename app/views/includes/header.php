@@ -12,10 +12,12 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
     <link href="<?php echo URLROOT ?>/public/css/fontawesome/css/all.css?v=<?php echo rand(10000000000,99999999999); ?>" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/home.css?v=<?php echo rand(10000000000,99999999999); ?>">
+    <script async src="https://maps.googleapis.com/maps/api/js?key=<?php echo GoogleAPIKeys; ?>&libraries=places&callback=initMap"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -23,7 +25,7 @@
 <header>
 <div class="topDiv">
 <div class="helpText">
-        <i style="margin-right:5px;" class="fas fa-question-circle"></i> Need help? contact <span class="helpColor"><i class="fas fa-envelope" style="margin-right:5px;"></i> help@hellotickets.ng  <span style="margin-left: 15px;"><i class="fas fa-phone-alt" style="margin-right:5px;"></i> 0709 9839 890</span><span> (HOTLINE)</span></span>
+        <i style="margin-right:5px;" class="fas fa-question-circle"></i> Need help? contact <span class="helpColor"><i class="fas fa-envelope" style="margin-right:5px;"></i> help@ayeyetickets.com  <span style="margin-left: 15px;"><i class="fas fa-phone-alt" style="margin-right:5px;"></i> 0709 9839 890</span><span> (HOTLINE)</span></span>
         </div>
         <div class="topnavright">
             <p>

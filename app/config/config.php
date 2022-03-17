@@ -22,3 +22,15 @@
     define('SMS_EmailID', 'tunslike@yahoo.com');
     define('SMS_Password', '@Dmin123$');
 
+
+    //PAYSTACK CONFIGURATION
+    define('PAYSTACK_Base_Url', 'https://api.paystack.co/transaction/initialize');
+    define('PAYSTACK_Test_Secret_Key', 'sk_test_785bec1ec7a487f89843335a8d06cc74d1082115');
+    define('PAYSTACK_Test_Public_Key', 'pk_test_36b0e503069e33cdcc4620147cdde8f4b4515700');
+    define('PAYSTACK_Callback_Url', URLROOT.'/events/validatePaymentResponse');
+
+    //GOOGLE API KEYS
+    define('GoogleAPIKeys', 'AIzaSyC2kxJDd0-CAP7DKPZnLXGgTf6LWkMWNMU');
+    
+
+

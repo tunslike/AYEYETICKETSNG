@@ -18,7 +18,7 @@
                   <a href="#"><li>Retrieve Tickets</li></a>
                   <a href="#"><li>Terms and Conditions</li></a>
                   <a href="#"><li>Privacy Policy</li></a>
-                  <a href="#"><li>About hellotickets.ng</li></a>
+                  <a href="#"><li>About ayeyetickets.com</li></a>
                 </ul>
         </div>
         <div class="footerCol">
@@ -29,7 +29,7 @@
             </div>
             <div style="margin-top:-10px;" class="contactUs">
                 <h6>EMAIL</h6>
-                <h4 style="font-size:18px;">help@hellotickets.ng</h4>
+                <h4 style="font-size:18px;">help@ayeyetickets.com</h4>
             </div>
             <div style="margin-top:20px; margin-left:-17px;">
             <p>
@@ -48,7 +48,7 @@
   </div>
 </div>
 <div class="footerCopyright">
-  © <?php echo date("Y"); ?> <span style="color:#ffe400;">hellotickets.ng</span>.  All Rights Reserved.
+  © <?php echo date("Y"); ?> <span style="color:#ffe400;">Ayeyetickets.com</span>.  All Rights Reserved.
 </div>
 
 </footer>
@@ -91,6 +91,7 @@ $(document).scroll(function() {
 });
 </script>
 <script src="<?php echo URLROOT; ?>/public/JS/app.js?v=<?php echo rand(10000000000,99999999999); ?>"></script>
+<script src="<?php echo URLROOT; ?>/public/JS/autocomplete.js?v=<?php echo rand(10000000000,99999999999); ?>"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
   $( function() {
@@ -123,7 +124,7 @@ $('#endTime').timepicker({
 });
   } );
   </script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
   <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
   <script>
   var quill = new Quill('#editor-container', {

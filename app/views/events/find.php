@@ -6,18 +6,19 @@
 
             <div class="innerHeaderDivider">
                 <div>
+
                 <div class="innerfeaturedHdr">
-                                DJ SPILLNAL Show Real 2022 - 18 Jun 2022
-                        </div>
+                               <?php echo $data['event']->EVENT_NAME; ?>
+                        </div>                        
                         <div style="margin-top:-5px;">
-                        <p><i style="margin-right:10px;" class="fas fa-home"></i> Eko Atlantic Lagos</p>                        
-<p><i style="margin-right:10px;" class="fas fa-map-marker-alt"></i> Eko Conventional Centre, Victoria Island Lagos</p>
+                        <p><i style="margin-right:10px;" class="fas fa-home"></i> <?php echo $data['event']->VENUE_NAME; ?></p>                        
+<p><i style="margin-right:10px;" class="fas fa-map-marker-alt"></i> <?php echo $data['event']->VENUE_LOCATION; ?></p>
 <p style="margin-top:-5px;"><i style="margin-right:10px;"class="fas fa-calendar-check"></i> 05:00pm - Saturday, 22nd January, 2022</p>
                         </div>
                 </div>
                         
                         <div class="reminderButton">
-                            <a href="#" title="Load more events!">Set A Reminder <i style="margin-left:5px;" class="fas fa-bell"></i></a>
+                            <a href="#" onclick="setEventReminder(); return false;" title="Load more events!">Set A Reminder <i style="margin-left:5px;" class="fas fa-bell"></i></a>
                         </div>
             </div>
 </div>
@@ -27,13 +28,13 @@
 
  <div class="leftDisplay">
      <div class="picDisplay">
-        <img src="<?php echo URLROOT; ?>/public/images/eventimg2.jpeg">
+        <img src="<?php echo URLROOT; ?>/public/images/<?php echo $data['event']->EVENT_IMAGE; ?>">
     </div>
     <div class="thumbImgs">
         <h6>No Addition Images</h6>
         <div class="thumbRow">
             <div class="picThumb">
-            <img src="<?php echo URLROOT; ?>/public/images/eventimg2.jpeg">
+            <img src="<?php echo URLROOT; ?>/public/images/<?php echo $data['event']->EVENT_IMAGE; ?>">
             </div>
         </div>
     </div>
@@ -84,28 +85,35 @@ Nulla facilisi. Fusce nec neque in orci sagittis lobortis. Nulla mauris enim, lu
     </div>
 </div>
  <div class="rightDisplay">
+
+
     <div class="gettickets">
         <div class="ticketHdr">
             Available Tickets
         </div>
 
-        <div class="ticketItem">
-            <div class="priceItem">
-                <div>Regular</div>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <div>₦ 5,000</div>
-            </div>
+        <?php foreach($data['tickets'] as $ticket): ?>
+                
+            <div class="ticketItem">
+                <div class="priceItem">
+                    <div><?php echo $ticket->TICKET_NAME; ?></div>
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                    <div>₦ <?php echo number_format($ticket->AMOUNT,0); ?></div>
+                </div>
 
-            <div class="counter">
-                <div class="plus">
-                    <a href="#" title="Add"><i class="fas fa-plus-square"></i></a>
-                </div>
-                <div class="countVal">1</div>
+                <div class="counter" id="ticketCounter_<?php echo $ticket->SEQ_NUM;?>" data-ticketname="<?php echo $ticket->TICKET_NAME; ?>" data-ticketprice="<?php echo $ticket->AMOUNT; ?>">
                 <div class="remove">
-                   <a href="#" title="Remove"><i class="fas fa-minus-square"></i></a>
+                    <a href="#" onclick="removeTickets(<?php echo $ticket->SEQ_NUM;?>); return false;" title="Remove"><i class="fas fa-minus-square"></i></a>
+                    </div>
+                    <div class="countVal" id="countVal_<?php echo $ticket->SEQ_NUM;?>">0</div>
+                    <div class="plus">
+                        <a href="#" onclick="addTickets(<?php echo $ticket->SEQ_NUM;?>); return false;" title="Add"><i class="fas fa-plus-square"></i></a>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php endforeach; ?>
+
+<!--
         <div class="ticketItem">
             <div class="priceItem">
                 <div>VIP Class</div>
@@ -140,24 +148,30 @@ Nulla facilisi. Fusce nec neque in orci sagittis lobortis. Nulla mauris enim, lu
                 </div>
             </div>
         </div>
-
+        -->
+        <form id="bookingForm" action="<?php echo URLROOT; ?>/events/confirmBooking" method ="POST"> 
         <div class="bookSummary">
             <h6><i class="far fa-calendar-check"></i> Booking Summary</h6>
             <div class="ticketItem" style="margin-top:-20px;">
                 <div>
                     <div class="amtTitles">Quantity</div>
-                    <div class="amtVals">2 Tickets</div>
+                    <div id="ticketList" class="amtVals"></div>
+
+                    <div style="margin-top:25px; display:none; font-weight:300; color:#000;" id="totalLabel" class="amtVals">Total:</div>
                 </div>
                 <div style="text-align:right;">
                     <div class="amtTitles">Amount</div>
-                    <div class="amtVals">₦ 50,000</div>
+                    <div id="ticktgAmt" class="amtVals"></div>
+                    <div style="margin-top:25px; display:none; font-weight:300; color:#000;"  id="totalAmt" class="amtVals">₦ 0.00</div>
                 </div>
             </div>
         </div>
-
+        <input type="hidden" id="tickets" name="tickets" value="">
+        <input type="hidden" name="eventid" id="eventid" value="<?php echo $data['event']->EVENT_ID; ?>">
         <div class="bookEventNow">
-            <a href="#" title="Load more events!">Buy Now</a>
+            <a id="btnBuyNow" onclick="return false;" href="#" title="Load more events!">Buy Now</a>
         </div>
+        </form>
 
         <div class="ticketCount">
             234 Tickets Remaining
@@ -183,6 +197,8 @@ Nulla facilisi. Fusce nec neque in orci sagittis lobortis. Nulla mauris enim, lu
         </div>
     </div>
 </div>
+
+
 </div>
 
 <?php

@@ -4,6 +4,20 @@
         return $guid = bin2hex(openssl_random_pseudo_bytes(16));
     }
 
+    function generateUniqueNumbers() {
+        return $iUniqueNumber = crc32(uniqid());
+    }
+
+    function formateDate($date) {
+
+        $original_date = $date;
+        $timestamp = strtotime($original_date);
+
+        $new_date = date("Y-m-d", $timestamp);
+        
+        return $new_date;
+    }
+
     function convertImageToBlob($file) {
 
         if(file_exists($file)){
@@ -11,6 +25,11 @@
         }else{
             return 'false';
         }
+    }
+
+    function formatEventDate($date) {
+        $date=date_create($date);
+        return date_format($date,"l, j F Y");
     }
 
     function generateCustomerNo () {
