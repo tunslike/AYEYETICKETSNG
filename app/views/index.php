@@ -341,7 +341,7 @@
                 We make finding events in cities more easier
             </h6>
             
-        <a href="#" title="Load more events!">See All Cities <i style="margin-left:5px;" class="fas fa-location-arrow"></i></a>
+        <a href="<?php echo URLROOT; ?>/events/cityEvent?type=all" title="Load more events!">See All Cities <i style="margin-left:5px;" class="fas fa-location-arrow"></i></a>
         
         </div>
         <div class="cityColumn">

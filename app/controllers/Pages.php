@@ -36,13 +36,13 @@ class Pages extends Controller {
 
         }
 
-        $events = $this->userModel->loadAllEvents($filter);
+        $events = $this->userModel->loadAllEventsHome();
 
         if($events == null) {
 
             $loadData = false;
 
-            $events = $this->userModel->loadAllEvents('all');
+            $events = $this->userModel->loadAllEventsHome();
 
         }else{
 

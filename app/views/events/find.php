@@ -13,7 +13,7 @@
                         <div style="margin-top:-5px;">
                         <p><i style="margin-right:10px;" class="fas fa-home"></i> <?php echo $data['event']->VENUE_NAME; ?></p>                        
 <p><i style="margin-right:10px;" class="fas fa-map-marker-alt"></i> <?php echo $data['event']->VENUE_LOCATION; ?></p>
-<p style="margin-top:-5px;"><i style="margin-right:10px;"class="fas fa-calendar-check"></i> 05:00pm - Saturday, 22nd January, 2022</p>
+<p style="margin-top:-5px;"><i style="margin-right:10px;"class="fas fa-calendar-check"></i> <?php echo $data['event']->START_TIME; ?> - <?php echo formatEventDate($data['event']->START_DATE); ?></p>
                         </div>
                 </div>
                         
@@ -30,14 +30,22 @@
      <div class="picDisplay">
         <img src="<?php echo URLROOT; ?>/public/images/<?php echo $data['event']->EVENT_IMAGE; ?>">
     </div>
+    <div style="display:flex; margin-top:-20px; flex-direction:row; justify-content:space-between; align-items: center;">
+
     <div class="thumbImgs">
-        <h6>No Addition Images</h6>
+        <h6>Event Banners</h6>
         <div class="thumbRow">
             <div class="picThumb">
             <img src="<?php echo URLROOT; ?>/public/images/<?php echo $data['event']->EVENT_IMAGE; ?>">
             </div>
         </div>
     </div>
+
+    <div class="viewDisplay">
+    <h6 title="<?php echo $data['event']->VIEWS; ?> People viewed this event!"><i class="fas fa-eye"></i> <?php echo $data['event']->VIEWS; ?></h6>
+    </div>
+    </div>
+    
 
     <div class="shareEvent">
     <h3>Share this Event</h3>

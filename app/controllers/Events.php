@@ -35,6 +35,7 @@ class Events extends Controller {
                 'eventName' => trim($_POST['eventName']),
                 'venueName' => trim($_POST['venueName']),
                 'venueAddress' => trim($_POST['venueAddress']),
+                'eventState' => trim($_POST['eventState']),
                 'venueLatitude' => trim($_POST['venue_loc_lat']),
                 'venueLongtitude' => trim($_POST['venue_loc_long']),
                 'startDate' => trim($_POST['startDate']),
@@ -98,11 +99,14 @@ class Events extends Controller {
         }
 
         $categories = $this->userModel->fetchEventCategories();
+        $states = $this->userModel->fetchStates();
 
         $data = [
             'status' => 'false',
             'title' => 'Find Events',
             'categories' => $categories,
+            'states' => $states,
+
         ];
 
         $this->view('events/createTicket', $data);
@@ -361,7 +365,36 @@ class Events extends Controller {
         ];
 
         $this->view('events/paymentConfirmation', $data);
+    }
 
+    public function cityEvent() {
+
+        if(isset($_GET['type'])) {
+            $type = $_GET['type'];
+        }
+
+
+        if(isset($_GET['page'])) {
+            $pageNo = $_GET['page'];
+        }else{
+            $pageNo = 1;
+        }
+    
+        $events = $this->userModel->loadAllEvents('all');
+        $states = $this->userModel->fetchEventStates();
+
+        $pageCount = count($events) / DisplayCount;
+
+        $data = [
+            'title' => 'City Events',
+            'type' => $type,
+            'events' => $events,
+            'pageCount' => $pageCount,
+            'pageNo' => $pageNo,
+            'states' => $states,
+        ];
+
+        $this->view('events/cityEvent', $data);
     }
 
     public function purchasedTickets() {

@@ -279,6 +279,27 @@ class Event {
     //end of function
 
     //function to load events
+    public function loadAllEventsHome() {
+
+        $start_date = date('Y-m-1',strtotime('this month'));
+    
+        $date = new DateTime('now');
+        $date->modify('last day of this month');
+        $end_date = $date->format('Y-m-d');
+
+         //Prepared statement
+         $this->db->query("SELECT EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED, 
+         (SELECT MIN(AMOUNT) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) AMOUNT, (SELECT MIN(TICKET_TYPE) FROM 
+         HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) TICKET_TYPE FROM HTNG_Events E WHERE STATUS = 0 ORDER BY DATE_CREATED 
+         ASC LIMIT 6;");
+
+        $results = $this->db->resultSet();
+
+        return $results;
+
+    }//end of function
+
+    //function to load events
     public function loadAllEvents($filter) {
 
         $start_date = date('Y-m-1',strtotime('this month'));
@@ -441,10 +462,10 @@ class Event {
         try{
 
             $this->db->query("INSERT INTO HTNG_Events (EVENT_ID, EVENT_CATEGORY, ACCOUNT_ID, EVENT_URL, EVENT_NAME, VENUE_NAME, 
-                                                        VENUE_LOCATION, VENUE_LONGITUDE, VENUE_LATITUDE,
+                                                        VENUE_LOCATION, STATE, VENUE_LONGITUDE, VENUE_LATITUDE,
                                                         EVENT_IMAGE, START_DATE, END_DATE, START_TIME, END_TIME, DESCRIPTION, 
                                                         CATEGORY, ACCESS_TYPE, CREATED_BY, DATE_CREATED, IP_ADDRESS) 
-                             VALUES (:eventid, :eventcat, :accountid, :event_url, :eventname, :venuename, :venueloc, :logitude, :latitude, :eventImg, :startDate,
+                             VALUES (:eventid, :eventcat, :accountid, :event_url, :eventname, :venuename, :venueloc, :state, :logitude, :latitude, :eventImg, :startDate,
                                     :endDate, :startTime, :endTime, :description, :category, :eventtype, :createdby, :dateCreated, :ipaddress) ");
 
             $date =  date('Y-m-d H:i:s');
@@ -459,6 +480,7 @@ class Event {
             $this->db->bind(':eventname', $data['eventName']);
             $this->db->bind(':venuename', $data['venueName']);
             $this->db->bind(':venueloc', $data['venueAddress']);
+            $this->db->bind(':state', $data['eventState']);
             $this->db->bind(':logitude', $data['venueLongtitude']);
             $this->db->bind(':latitude', $data['venueLatitude']);
             $this->db->bind(':eventImg', $data['filenameUploaded']);
@@ -583,6 +605,26 @@ class Event {
 
         return $results;
    }
+
+   public function fetchStates() {
+
+    //Prepared statement
+    $this->db->query("SELECT * FROM HTNG_State WHERE STATUS = 0");
+
+    $results = $this->db->resultSet();
+
+    return $results;
+}
+
+public function fetchEventStates() {
+
+    //Prepared statement
+    $this->db->query("SELECT DISTINCT STATE from HTNG_Events WHERE STATUS = 0;");
+
+    $results = $this->db->resultSet();
+
+    return $results;
+}
 
     public function loadEventTickets($eventid) {
 

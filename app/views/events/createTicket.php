@@ -79,6 +79,15 @@
             <input type="hidden" id="venue_loc_lat" name="venue_loc_lat" value="">
             <input type="hidden" id="venue_loc_long" name="venue_loc_long" value="">
         </div>
+        <div class="loginform">
+            <label for="usern">State:</label>
+            <select name="eventState" id="eventState">
+                    <option default value="">Select here</option>
+                    <?php foreach($data['states'] as $state): ?>
+                        <option value="<?php echo $state->STATE_NAME; ?>"><?php echo $state->STATE_NAME; ?></option>
+                    <?php endforeach; ?>
+            </select>
+        </div>
         <h6 class="autocomplete_alert"><i style="margin-right:5px;" class="fa-regular fa-circle-info"></i> Autocomplete is enabled</h6>
         <div class="loginform">
             <label for="usern">Event Image:</label>
