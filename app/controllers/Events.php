@@ -31,9 +31,12 @@ class Events extends Controller {
             $data = [
 
                 'accountid' => $customerid,
+                'eventCategory' => trim($_POST['eventCategory']),
                 'eventName' => trim($_POST['eventName']),
                 'venueName' => trim($_POST['venueName']),
                 'venueAddress' => trim($_POST['venueAddress']),
+                'venueLatitude' => trim($_POST['venue_loc_lat']),
+                'venueLongtitude' => trim($_POST['venue_loc_long']),
                 'startDate' => trim($_POST['startDate']),
                 'endDate' => trim($_POST['endDate']),
                 'startTime' => trim($_POST['startTime']),
@@ -145,6 +148,21 @@ class Events extends Controller {
 
     }
 
+    //get product details
+    public function returnEventListName () {
+
+        //get product id
+        if(isset($_GET['searchVal'])) {
+            $searchVal = $_GET['searchVal'];
+        }
+
+        $result = $this->userModel->searchInstandEvent($searchVal);
+
+        //response*********************************************
+	    echo json_encode($result);
+
+    }
+
     public function find() {
 
         if(isset($_GET['pid'])) {
@@ -155,6 +173,8 @@ class Events extends Controller {
         if(trim($eventid) == '') {
             header("Location: " . URLROOT . "/index");
         }
+
+        $view = $this->userModel->updateEventView($eventid);
         
         $events = $this->userModel->findEventDetails($eventid);
         $tickets = $this->userModel->loadEventTickets($eventid);
@@ -166,6 +186,43 @@ class Events extends Controller {
         ];
 
         $this->view('events/find', $data);
+    }
+
+    public function loadEvent() {
+
+        if(isset($_GET['category'])) {
+            $search = $_GET['category'];
+        }else{
+            $search = '';
+        }
+
+        if(isset($_GET['format'])) {
+            $format = $_GET['format'];
+        }else{
+            $format = '';
+        }
+
+
+        if(isset($_GET['page'])) {
+            $pageNo = $_GET['page'];
+        }else{
+            $pageNo = 1;
+        }
+    
+        $events = $this->userModel->loadAllEvents('all');
+
+        $pageCount = count($events) / DisplayCount;
+
+        $data = [
+            'title' => 'Find Details',
+            'events' => $events,
+            'pageCount' => 5,
+            'pageNo' => $pageNo,
+            'format' => $format,
+            'category' => $search,
+        ];
+
+        $this->view('events/loadEvent', $data);
     }
 
     public function makePayment() {

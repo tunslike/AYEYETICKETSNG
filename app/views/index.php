@@ -9,7 +9,7 @@
         Looking for an <span style="color:#ffe400;">Event?</span> <br><span style="font-weight:400;">search with almost <span style="color:#ffe400;">anything!</span></span>
         </div>
         <div class="mainsearch">
-        <form action="<?php echo URLROOT; ?>/stores/searchProduct?index=instant&return=1" method="POST" id="instantSearch">
+        <form action="<?php echo URLROOT; ?>/events/searchEvent?index=instant&return=1" method="POST" id="instantSearch">
             <div class="iconsearch"><i class="fas fa-search"></i></div>
             <input type="text" id="searchValueField" onKeyUp="ValidateInstantSearch(this.value); return;" placeholder="Event name, Location, State, Landmark, Organizer or Artist" name="searchValueField" />
             <!--
@@ -20,37 +20,41 @@
             </select>
             -->
             <button type="submit" form="instantSearch" value="Submit">Search</button>
-        </form>
+</form>
+        </div>
+        <div class="searchDropWindow">
+            <ul id="searchdata">
+            </ul>
         </div>
 
         <div class="category">
             <ul>
-                <a href="<?php echo URLROOT; ?>/category?filter=Music and Entertainment#eventList" title="Music and Entertainment"><li>
+                <a href="<?php echo URLROOT; ?>/events/loadEvent?format=cat&category=Music and Entertainment" title="Music and Entertainment"><li>
                     <div><img src="<?php echo URLROOT; ?>/public/images/icon1.png" /><div>
                         <div class="catItemTitle">
                     Music and Entertainment</div>
                 </li></a>
-                <a href="<?php echo URLROOT; ?>/category?filter=Sport and Fitness#eventList" title="Sport and Fitness"><li>
+                <a href="<?php echo URLROOT; ?>/events/loadEvent?format=cat&category=Sport and Fitness" title="Sport and Fitness"><li>
                     <div><img width="48" src="<?php echo URLROOT; ?>/public/images/icon2.png" /><div>
                         <div class="catItemTitle">
                         Sport and <br> Fitness</div>
                 </li></a>
-                <a href="<?php echo URLROOT; ?>/category?filter=Arts and Culture#eventList" title="Arts and Culture"><li>
+                <a href="<?php echo URLROOT; ?>/events/loadEvent?format=cat&category=Arts and Culture" title="Arts and Culture"><li>
                     <div><img src="<?php echo URLROOT; ?>/public/images/icon3.png" /><div>
                     <div class="catItemTitle">
                         Arts and <br> Culture</div>
                 </li></a>
-                <a href="<?php echo URLROOT; ?>/category?filter=Business and Corporate#eventList" title="Business and Corporate"><li>
+                <a href="<?php echo URLROOT; ?>/events/loadEvent?format=cat&category=Business and Corporate" title="Business and Corporate"><li>
                     <div><img src="<?php echo URLROOT; ?>/public/images/icon4.png" /><div>
                     <div class="catItemTitle">
                         Business and <br> Corporate</div>
                 </li></a>
-                <a href="<?php echo URLROOT; ?>/category?filter=NGOs and Community#eventList" title="NGOs and Community"><li>
+                <a href="<?php echo URLROOT; ?>/events/loadEvent?format=cat&category=NGOs and Community" title="NGOs and Community"><li>
                     <div><img src="<?php echo URLROOT; ?>/public/images/icon5.png" /><div>
                     <div class="catItemTitle">
                         NGOs and <br> Community</div>
                 </li></a>
-                <a href="<?php echo URLROOT; ?>/category?filter=Conference and Seminar#eventList" title="Conference and Seminar"><li>
+                <a href="<?php echo URLROOT; ?>/events/loadEvent?format=cat&category=Conference and Seminar" title="Conference and Seminar"><li>
                     <div><img src="<?php echo URLROOT; ?>/public/images/icon6.png" /><div>
                     <div class="catItemTitle"> 
                     Conference and <br> Seminar</div>
@@ -207,7 +211,7 @@
                     <div class="postTicketLabel">
                     <img src="<?php echo URLROOT; ?>/public/images/ticket2.png" alt=""> <span style="font-size:12px; color:#D1B2FF; margin-right:5px;">FROM </span> ₦ <?php echo number_format($event->AMOUNT,0); ?>
                     </div>
-                    <a href="#" style="text-decoration: none;" title="Share ticket link">
+                    <a href="#" onclick="shareEvent('<?php echo URLROOT.'/events/buyticket/'.$event->EVENT_URL; ?>'); return false;" style="text-decoration: none;" title="Share ticket link">
                         <div class="shareticket">
                         <i style="margin-right:5px;" class="fas fa-share-alt"></i> Share 
                         </div>
@@ -319,8 +323,8 @@
 
     </div>
 
-    <div class="loadmore">
-        <a href="#" title="Load more events!">See More Events <i style="margin-left:5px;" class="fas fa-location-arrow"></i></a>
+    <div class="loadmoreHome">
+        <a href="<?php echo URLROOT; ?>/events/loadEvent?page=1" title="Load more events!">See More Events <i style="margin-left:5px;" class="fas fa-location-arrow"></i></a>
     </div>
 
 </div>

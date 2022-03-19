@@ -14,6 +14,9 @@
     //Sitename
     define('SITENAME', 'Get the buzz | Hellotickets.ng');
 
+    //Event display row count
+    define('DisplayCount', 9);
+
     //Email Configuration
     define('EMAIL_USERNAME', 'tunslike@gmail.com');
     define('EMAIL_API_KEY', '3dc0b88c-71e0-451c-8f7b-884e32d411e2');
@@ -30,7 +33,7 @@
     define('PAYSTACK_Callback_Url', URLROOT.'/events/validatePaymentResponse');
 
     //GOOGLE API KEYS
-    define('GoogleAPIKeys', 'AIzaSyC2kxJDd0-CAP7DKPZnLXGgTf6LWkMWNMU');
+    define('GoogleAPIKeys', 'AIzaSyAsV6TozhWhUnNklfQg8w2uPKSCXgX7wac');
     
 
 

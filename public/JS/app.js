@@ -17,6 +17,69 @@ function numericFilter(txb) {
     }
 }
 
+// FUNCTION TO SHARE Event
+function shareEvent(url) {
+    swal({
+        button: "Close",
+        title: 'Share Event details',
+        content: {
+          element: "input",
+          attributes: {
+            placeholder: "Enter your email address",
+            type: "text",
+            value: url
+          },
+        },
+      })
+}
+
+
+
+function ValidateInstantSearch (value) {
+
+    if(value.trim().length == 0) {
+        $('.searchDropWindow').hide()
+    }
+
+    if(value.trim() == '') {
+        $('#searchdata').html('')
+        $('.searchDropWindow').hide()
+
+        return false;
+    }
+
+    $('#searchdata').html('')
+
+    $.ajax({
+        type: "GET",
+        data: { searchVal: value },
+        url: "http://localhost:8080/helloticketsng/events/returnEventListName",
+        success: function (data) {
+        
+         //show
+         $('.searchDropWindow').show()
+
+          //$("#standprice").show();
+          var response = JSON.parse(data);
+
+          //loop through item
+          for (var i=0; i<response.length; i++) {
+            var obj = response[i];
+            $('#searchdata').append("<li><a data-type-partNumber='" + obj.EVENT_NAME + ' | ' + obj.VENUE_NAME + ' | ' + obj.START_DATE + "' onclick='SetSearchValue(this)'; return false;' href='#'><span style='font-size:10px;color:#6f7290;'>Event Name: </span>"+obj.EVENT_NAME + " - <span style='font-size:10px;color:#6f7290;'>Venue: </span>" + obj.VENUE_NAME + " - <span style='font-size:10px;color:#6f7290;'>Date: </span>" + obj.START_DATE +"</a></li>")
+          }
+        },
+    });
+}
+
+function SetSearchValue(value) {
+
+    $('.searchDropWindow').hide()
+    
+    var setvalue = value.getAttribute("data-type-partNumber");
+
+    $('#searchValueField').val(setvalue)
+}
+
 // FUNCTION TO SET REMINDER
 function setEventReminder() {
     

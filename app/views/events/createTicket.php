@@ -79,6 +79,7 @@
             <input type="hidden" id="venue_loc_lat" name="venue_loc_lat" value="">
             <input type="hidden" id="venue_loc_long" name="venue_loc_long" value="">
         </div>
+        <h6 class="autocomplete_alert"><i style="margin-right:5px;" class="fa-regular fa-circle-info"></i> Autocomplete is enabled</h6>
         <div class="loginform">
             <label for="usern">Event Image:</label>
             <input type="file" required id="eventimage" name="evemtImage">

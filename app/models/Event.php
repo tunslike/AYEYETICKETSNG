@@ -291,35 +291,35 @@ class Event {
         switch($filter) {
             case '':
                     //Prepared statement
-                    $this->db->query("SELECT EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
+                    $this->db->query("SELECT EVENT_URL, EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
                     (SELECT MIN(AMOUNT) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) AMOUNT,
                     (SELECT MIN(TICKET_TYPE) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) TICKET_TYPE
                     FROM HTNG_Events E WHERE STATUS = 0 ORDER BY DATE_CREATED ASC;");
             break;
             case 'all':
                     //Prepared statement
-                    $this->db->query("SELECT EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
+                    $this->db->query("SELECT EVENT_URL, EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
                     (SELECT MIN(AMOUNT) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) AMOUNT,
                     (SELECT MIN(TICKET_TYPE) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) TICKET_TYPE
                     FROM HTNG_Events E WHERE STATUS = 0 ORDER BY DATE_CREATED ASC;");
             break;
             case 'today':
                     //Prepared statement
-                    $this->db->query("SELECT EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
+                    $this->db->query("SELECT EVENT_URL, EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
                     (SELECT MIN(AMOUNT) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) AMOUNT,
                     (SELECT MIN(TICKET_TYPE) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) TICKET_TYPE
                     FROM HTNG_Events E WHERE START_DATE = NOW() AND STATUS = 0 ORDER BY DATE_CREATED ASC;");
             break;
             case 'week':
                     //Prepared statement
-                    $this->db->query("SELECT EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
+                    $this->db->query("SELECT EVENT_URL, EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
                     (SELECT MIN(AMOUNT) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) AMOUNT,
                     (SELECT MIN(TICKET_TYPE) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) TICKET_TYPE
                     FROM HTNG_Events E WHERE START_DATE BETWEEN (CURRENT_DATE - INTERVAL 7 DAY) AND NOW() AND STATUS = 0 ORDER BY DATE_CREATED ASC;");
             break;
             case 'month':
                     //Prepared statement
-                    $this->db->query("SELECT EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
+                    $this->db->query("SELECT EVENT_URL, EVENT_ID, EVENT_NAME, VENUE_NAME, EVENT_IMAGE, START_DATE, DATE_CREATED,  
                     (SELECT MIN(AMOUNT) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) AMOUNT,
                     (SELECT MIN(TICKET_TYPE) FROM HTNG_Event_Tickets WHERE EVENT_ID = E.EVENT_ID) TICKET_TYPE
                     FROM HTNG_Events E WHERE START_DATE >= '.$start_date.' AND END_DATE <= '.$end_date.' AND STATUS = 0 ORDER BY DATE_CREATED ASC;");
@@ -337,6 +337,55 @@ class Event {
         return $results;
 
     }//end of function
+
+    public function searchInstandEvent($search) {
+              
+        $this->db->query("SELECT EVENT_NAME, VENUE_NAME, DATE_FORMAT(START_DATE, '%d-%b-%y')START_DATE FROM HTNG_Events WHERE 
+        EVENT_NAME LIKE :search OR EVENT_CATEGORY LIKE :search OR VENUE_NAME LIKE :search;");
+
+        //Bind value
+        $this->db->bind(':search', '%'.$search.'%');
+
+        $results = $this->db->resultSet();
+
+        return $results;
+    }
+
+
+    public function updateEventView($eventid) {
+
+        try{
+
+        //Prepared statement
+        $this->db->query("SELECT * FROM HTNG_Events WHERE EVENT_ID = :event_id;");
+    
+        //Bind values
+        $this->db->bind(':event_id', $eventid);
+   
+        $row = $this->db->single();
+
+        $viewCount = $row->VIEWS + 1;
+
+
+        $this->db->query("UPDATE HTNG_Events SET VIEWS = :viewCount WHERE EVENT_ID = :eventid");
+
+            //Bind values
+            $this->db->bind(':viewCount', $viewCount);
+            $this->db->bind(':eventid', $eventid);
+        
+            //Execute function
+            if ($this->db->execute()) { 
+                return true;
+            } else {
+                return false;
+            }
+
+        }catch(PDOException $e){
+            echo 'ERROR!';
+            print_r( $e );
+        }
+
+    }
 
     //function to create ticket order
     public function createTicketOrder($data) {
@@ -391,21 +440,27 @@ class Event {
 
         try{
 
-            $this->db->query("INSERT INTO HTNG_Events (EVENT_ID, ACCOUNT_ID, EVENT_NAME, VENUE_NAME, VENUE_LOCATION, 
-                             EVENT_IMAGE, START_DATE, END_DATE, START_TIME, END_TIME, DESCRIPTION, CATEGORY, ACCESS_TYPE, 
-                             CREATED_BY, DATE_CREATED, IP_ADDRESS) 
-                             VALUES (:eventid, :accountid, :eventname, :venuename, :venueloc, :eventImg, :startDate,
+            $this->db->query("INSERT INTO HTNG_Events (EVENT_ID, EVENT_CATEGORY, ACCOUNT_ID, EVENT_URL, EVENT_NAME, VENUE_NAME, 
+                                                        VENUE_LOCATION, VENUE_LONGITUDE, VENUE_LATITUDE,
+                                                        EVENT_IMAGE, START_DATE, END_DATE, START_TIME, END_TIME, DESCRIPTION, 
+                                                        CATEGORY, ACCESS_TYPE, CREATED_BY, DATE_CREATED, IP_ADDRESS) 
+                             VALUES (:eventid, :eventcat, :accountid, :event_url, :eventname, :venuename, :venueloc, :logitude, :latitude, :eventImg, :startDate,
                                     :endDate, :startTime, :endTime, :description, :category, :eventtype, :createdby, :dateCreated, :ipaddress) ");
 
             $date =  date('Y-m-d H:i:s');
             $eventid = getUniqueUserID();
-
+            $event_url = str_replace(" ", "-", $data['eventName']).'-'.generateUniqueNumbers();
+    
             //Bind values
             $this->db->bind(':eventid', $eventid);
+            $this->db->bind(':eventcat', $data['eventCategory']);
             $this->db->bind(':accountid', $data['accountid']);
+            $this->db->bind(':event_url', $event_url);
             $this->db->bind(':eventname', $data['eventName']);
             $this->db->bind(':venuename', $data['venueName']);
             $this->db->bind(':venueloc', $data['venueAddress']);
+            $this->db->bind(':logitude', $data['venueLongtitude']);
+            $this->db->bind(':latitude', $data['venueLatitude']);
             $this->db->bind(':eventImg', $data['filenameUploaded']);
             $this->db->bind(':startDate', formateDate($data['startDate']));
             $this->db->bind(':endDate', formateDate($data['endDate']));
